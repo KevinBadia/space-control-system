@@ -15,8 +15,8 @@
 - [Sprint 1 Summary](SPRINT_1_SUMMARY.md)
 - [Domain Spec](DOMAIN.md)
 
-
-## space-control-system repository
+## API
+See [API.md](API.md) for endpoint documentation.
 
 ### Overview
 This project implements a system for simulating and controlling a simplified spacecraft in 2D.
