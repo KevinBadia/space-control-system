@@ -1,5 +1,22 @@
 # Space Control System
 
+![Python](https://img.shields.io/badge/python-3.11%2B-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
+![Tests](https://img.shields.io/badge/tests-pytest-informational)
+
+![Last Commit](https://img.shields.io/github/last-commit/KevinBadia/space-control-system)
+![Commit Activity](https://img.shields.io/github/commit-activity/m/KevinBadia/space-control-system)
+![Repo Size](https://img.shields.io/github/repo-size/KevinBadia/space-control-system)
+![License](https://img.shields.io/github/license/KevinBadia/space-control-system)
+![Issues](https://img.shields.io/github/issues/KevinBadia/space-control-system)
+[![Last Commit](https://img.shields.io/github/last-commit/KevinBadia/space-control-system)](https://github.com/KevinBadia/space-control-system/commits/main)
+
+## Quick links
+- [API Docs](http://127.0.0.1:8000/docs)
+- [Sprint 1 Summary](SPRINT_1_SUMMARY.md)
+- [Domain Spec](DOMAIN.md)
+
+
 ## space-control-system repository
 
 ### Overview
@@ -44,25 +61,41 @@ It is an engineering-oriented backend system.
 
 ---
 
+## Current status
+
+Sprint 1 completed.
+
+The project currently provides:
+- A clean, layered backend architecture
+- A deterministic step-based spacecraft simulation
+- REST API endpoints for observing and controlling system state
+- Test coverage for domain logic and API behavior
+- Isolated and reproducible test execution
+
+The system is intentionally simple but structurally sound, serving as a foundation for more advanced control and data features.
+
+---
+
 ## Milestones
 
-### Milestone 1 — Core simulation & API
-- [ ] Domain model defined
-- [ ] Simulation loop implemented
-- [ ] State evolution validated
-- [ ] Basic API endpoints available
+### Milestone 1 — Core simulation & API ✅
+- [x] Domain model defined
+- [x] Spacecraft state and dynamics implemented
+- [x] Step-based simulation logic
+- [x] Health, state, and history endpoints
+- [x] Control endpoints (step, commands)
+- [x] Test coverage with proper isolation
 
-### Milestone 2 — Control & robustness
-- [ ] Command validation
-- [ ] Error handling
-- [ ] Command queue management
-- [ ] Improved test coverage
+### Milestone 2 — Robust control & execution loop (planned)
+- [ ] Command queue with durations
+- [ ] Background simulation loop
+- [ ] Improved command validation
+- [ ] Pause / resume execution
 
-### Milestone 3 — Data & observability
-- [ ] State history
-- [ ] Telemetry logging
+### Milestone 3 — Data & observability (planned)
+- [ ] Telemetry buffering
 - [ ] Data export interfaces
-- [ ] Basic performance considerations
+- [ ] Performance considerations
 
 ---
 
@@ -71,6 +104,16 @@ It is an engineering-oriented backend system.
 - FastAPI
 - Pydantic
 - Pytest
+
+---
+
+## Design principles
+
+- Clear separation between domain, application, and API layers
+- Deterministic and testable simulation logic
+- Explicit control over time progression
+- Minimal assumptions and controlled scope
+- Architecture-first development approach
 
 ---
 
