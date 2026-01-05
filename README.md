@@ -4,12 +4,11 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
 ![Tests](https://img.shields.io/badge/tests-pytest-informational)
 
-![Last Commit](https://img.shields.io/github/last-commit/KevinBadia/space-control-system)
+[![Last Commit](https://img.shields.io/github/last-commit/KevinBadia/space-control-system)](https://github.com/KevinBadia/space-control-system/commits/main)
 ![Commit Activity](https://img.shields.io/github/commit-activity/m/KevinBadia/space-control-system)
 ![Repo Size](https://img.shields.io/github/repo-size/KevinBadia/space-control-system)
 ![License](https://img.shields.io/github/license/KevinBadia/space-control-system)
 ![Issues](https://img.shields.io/github/issues/KevinBadia/space-control-system)
-[![Last Commit](https://img.shields.io/github/last-commit/KevinBadia/space-control-system)](https://github.com/KevinBadia/space-control-system/commits/main)
 
 ## Quick links
 - [API Docs](http://127.0.0.1:8000/docs)
