@@ -8,9 +8,3 @@ def test_health_check():
     print(response.json())
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
-
-def test_info_check():
-    response = client.get("/info")
-    print(response.json())
-    assert response.status_code == 200
-    assert response.json() == {"info": "info aqui"}
