@@ -1,0 +1,8 @@
+[project]
+name = "space-control-system"
+version = "0.1.0"
+description = "Backend system for spacecraft control simulation"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
