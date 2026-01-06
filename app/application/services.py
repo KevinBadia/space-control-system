@@ -28,7 +28,7 @@ class SimulationService:
     def step(self, dt: float):
 #        self.system.step(dt)
 #        self.history.append(self.system.state.model_copy())
-        if dt <= 0:
+        """ if dt <= 0:
             raise ValueError("dt must be positive")
         
         # Aggregate active effects
@@ -58,8 +58,43 @@ class SimulationService:
         self.system.apply_torque(torque)
 
         self.system.step(dt)
-        self.history.append(self.system.state.model_copy())
+        self.history.append(self.system.state.model_copy()) """
 
+        if dt <= 0:
+            raise ValueError("dt must be positive")
+        
+        fx_time = 0.0
+        fy_time = 0.0
+        torque_time = 0.0
+        remaining_commands: list[Command] = []
+
+        for cmd in self.command_queue:
+            applied_dt = min(dt, cmd.remaining_time)
+
+            if cmd.type == "apply_force":
+                fx_time += cmd.fx * applied_dt
+                fy_time += cmd.fy * applied_dt
+
+            elif cmd.type == "apply_torque":
+                torque_time += cmd.torque * applied_dt
+
+            cmd.remaining_time -= applied_dt
+
+            if cmd.remaining_time > 0:
+                remaining_commands.append(cmd)
+
+        self.command_queue = remaining_commands
+
+        # Convert time-integrated effects into average inputs over dt
+        fx = fx_time / dt
+        fy = fy_time / dt
+        torque = torque_time / dt
+
+        self.system.apply_force(fx, fy)
+        self.system.apply_torque(torque)
+
+        self.system.step(dt)
+        self.history.append(self.system.state.model_copy())
 
     def get_state(self) -> State:
         return self.system.state
