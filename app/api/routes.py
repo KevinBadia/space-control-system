@@ -6,18 +6,45 @@ from app.application.commands import Command
 router = APIRouter()
 simulation = SimulationService()
 
+
 @router.get("/state")
 def get_state():
     return simulation.get_state()
+
 
 @router.get("/history")
 def get_history(limit: int = 100):
     return simulation.get_history(limit = limit)
 
+
 @router.post("/step")
 def step(req: StepRequest):
     simulation.step(dt=req.dt)
     return {"ok": True, "state": simulation.get_state()}
+
+
+@router.post("/run")
+def run():
+    simulation.run()
+    return {"running": True}
+
+
+@router.post("/pause")
+def pause():
+    simulation.pause()
+    return {"paused": True}
+
+
+@router.post("/resume")
+def resume():
+    simulation.resume()
+    return {"paused": False}
+
+
+@router.post("/stop")
+def stop():
+    simulation.stop()
+    return {"running": False}
 
 
 @router.post("/command")

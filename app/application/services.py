@@ -1,6 +1,7 @@
 from app.domain.state import State
 from app.domain.system import SpacecraftSystem
 from app.application.commands import Command
+from app.infrastructure.runner import SimulationRunner
 # No importamos CommandRequest, dado que pasaremos un dict a la función directamente
 
 class SimulationService:
@@ -24,7 +25,21 @@ class SimulationService:
         self.history: list[State] = []
 
         self.command_queue: list[Command] = []
-    
+
+        self.runner = SimulationRunner(self.step, dt=0.1)
+
+    def run(self):
+        self.runner.start()
+
+    def pause(self):
+        self.runner.pause()
+
+    def resume(self):
+        self.runner.resume()
+
+    def stop(self):
+        self.runner.stop()
+
     def step(self, dt: float):
 #        self.system.step(dt)
 #        self.history.append(self.system.state.model_copy())
