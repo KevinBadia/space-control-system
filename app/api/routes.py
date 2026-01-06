@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from app.application.services import SimulationService
 from app.api.schemas import StepRequest, CommandRequest
+from app.application.commands import Command
 
 router = APIRouter()
 simulation = SimulationService()
@@ -21,8 +22,24 @@ def step(req: StepRequest):
 
 @router.post("/command")
 def command(req: CommandRequest):
-    try:
-        simulation.apply_command(req.model_dump())
+    # try:
+    #    simulation.apply_command(req.model_dump())
+    #    return {"accepted": True}
+    #except ValueError as e:
+    #    raise HTTPException(status_code=400, detail=str(e))
+    if req.type == "reset":
+        simulation.__init__()
         return {"accepted": True}
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    
+    duration = req.duration or 1.0
+
+    cmd = Command(
+        type=req.type,
+        fx=req.fx or 0.0,
+        fy=req.fy or 0.0,
+        torque=req.torque or 0.0,
+        remaining_time=duration,
+    )
+
+    simulation.enqueue_command(cmd)
+    return {"accepted": True}

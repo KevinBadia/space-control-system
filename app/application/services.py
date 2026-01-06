@@ -1,5 +1,6 @@
 from app.domain.state import State
 from app.domain.system import SpacecraftSystem
+from app.application.commands import Command
 # No importamos CommandRequest, dado que pasaremos un dict a la función directamente
 
 class SimulationService:
@@ -21,10 +22,44 @@ class SimulationService:
         )
 
         self.history: list[State] = []
+
+        self.command_queue: list[Command] = []
     
     def step(self, dt: float):
+#        self.system.step(dt)
+#        self.history.append(self.system.state.model_copy())
+        if dt <= 0:
+            raise ValueError("dt must be positive")
+        
+        # Aggregate active effects
+        fx = fy = torque = 0.0
+
+        remaining_commands = []
+
+        for cmd in self.command_queue:
+            applied_dt = min(dt, cmd.remaining_time)
+
+            if cmd.type == "apply_force":
+                fx += cmd.fx
+                fy += cmd.fy
+
+            elif cmd.type == "apply_torque":
+                torque += cmd.torque
+
+            cmd.remaining_time -= applied_dt
+
+            if cmd.remaining_time > 0:
+                remaining_commands.append(cmd)
+
+        self.command_queue = remaining_commands
+
+        # Apply aggregated effects to domain
+        self.system.apply_force(fx, fy)
+        self.system.apply_torque(torque)
+
         self.system.step(dt)
         self.history.append(self.system.state.model_copy())
+
 
     def get_state(self) -> State:
         return self.system.state
@@ -49,3 +84,8 @@ class SimulationService:
 
         else:
             raise ValueError("Unknown command type")
+        
+    def enqueue_command(self, cmd: Command):
+        if cmd.remaining_time <= 0:
+            raise ValueError("Command duration must be positive")
+        self.command_queue.append(cmd)

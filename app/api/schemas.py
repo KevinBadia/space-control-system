@@ -12,3 +12,4 @@ class CommandRequest(BaseModel):
     fy: Optional[float] = Field(default = None, ge = -10, le = 10)
 
     torque: Optional[float] = Field(default = None, ge = -5, le = 5)
+    duration: Optional[float] = Field(default=None, gt=0)
