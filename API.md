@@ -166,6 +166,23 @@ Resets the simulation state to initial conditions.
 
 ---
 
+### Simulation Control
+
+#### `POST /run`  
+Starts the background simulation loop.
+
+#### `POST /pause`  
+Pauses simulation execution.
+
+#### `POST /resume`  
+Resumes simulation execution after a pause.
+
+#### `POST /stop`  
+Stops the simulation loop.
+
+
+---
+
 ## Typical usage flow
 
 1. Check server health:

@@ -47,3 +47,39 @@
 - Refine architecture for concurrency and scalability.
 
 
+## Day 6: Background execution and infrastructure
+**Date:** 2026-01-06  
+**Time spent:** ~2–3 hours  
+
+### What I did
+- Implemented a background simulation runner using a dedicated thread.
+- Introduced automatic periodic execution of simulation steps.
+- Added lifecycle controls to the application layer (run, pause, resume, stop).
+- Exposed simulation lifecycle control endpoints through the API.
+- Added basic tests to validate automatic time progression.
+- Ensured infrastructure responsibilities remained isolated from domain logic.
+
+### Key decisions
+- Chose a thread-based execution model over asyncio for simplicity and clarity.
+- Introduced infrastructure only after control logic was stable.
+- Kept execution control centralized in the application layer.
+- Accepted limited thread-safety as a conscious short-term trade-off.
+
+### Problems encountered
+- Coordinating background execution without polluting domain logic.
+- Ensuring the runner could be cleanly started and stopped.
+
+### How they were solved
+- Introduced a dedicated infrastructure component for execution.
+- Used clear lifecycle states and explicit control methods.
+- Validated behavior through targeted integration tests.
+
+### Lessons learned
+- Introducing infrastructure later significantly simplifies design.
+- Explicit lifecycle control improves system observability and debuggability.
+- Separating execution from control is critical for system evolution.
+
+### Next steps
+- Add basic thread-safety mechanisms.
+- Harden infrastructure for concurrent access.
+- Continue Sprint 2 with robustness improvements.

@@ -14,6 +14,8 @@
 - [API Docs](http://127.0.0.1:8000/docs)
 - [Sprint 1 Summary](SPRINT_1_SUMMARY.md)
 - [Domain Spec](DOMAIN.md)
+- Simulation control: `/run`, `/pause`, `/resume`, `/stop`
+
 
 ## API
 See [API.md](API.md) for endpoint documentation.
@@ -70,6 +72,8 @@ The project currently provides:
 - REST API endpoints for observing and controlling system state
 - Test coverage for domain logic and API behavior
 - Isolated and reproducible test execution
+- Automatic background simulation loop with start/pause/stop controls
+
 
 The system is intentionally simple but structurally sound, serving as a foundation for more advanced control and data features.
 
