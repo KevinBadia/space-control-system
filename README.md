@@ -90,10 +90,10 @@ The system is intentionally simple but structurally sound, serving as a foundati
 - [x] Test coverage with proper isolation
 
 ### Milestone 2 — Robust control & execution loop (planned)
-- [ ] Command queue with durations
-- [ ] Background simulation loop
-- [ ] Improved command validation
-- [ ] Pause / resume execution
+- [x] Command queue with durations
+- [x] Background simulation loop
+- [x] Improved command validation
+- [x] Pause / resume execution
 
 ### Milestone 3 — Data & observability (planned)
 - [ ] Telemetry buffering
