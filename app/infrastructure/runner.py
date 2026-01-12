@@ -37,3 +37,9 @@ class SimulationRunner:
         if self._thread:
             self._thread.join(timeout=1)
             self._thread = None
+
+    def is_running(self):
+        return self._running
+
+    def is_paused(self):
+        return self._paused

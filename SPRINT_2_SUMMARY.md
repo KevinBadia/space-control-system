@@ -1,95 +1,108 @@
 # Sprint 2 — Summary
 
 ## Objective
-The goal of Sprint 2 is to evolve the system from a manually stepped simulation into a more realistic and robust control system, introducing temporal command handling and autonomous execution while preserving architectural clarity and testability.
+The goal of Sprint 2 was to evolve the system from a manually stepped simulation into a robust, time-aware control system with autonomous execution, while preserving architectural clarity, correctness, and testability.
 
 ---
 
 ## Scope
-Sprint 2 focuses on:
-- Command scheduling with explicit durations
+Sprint 2 focused on:
+- Time-based command scheduling
 - Temporal correctness of command effects
-- Automatic background execution of the simulation
+- Autonomous background execution
+- Minimal but effective thread-safety
 - Clear separation between control, execution, and domain logic
 
-Out of scope (for now):
-- Fine-grained thread safety
+Out of scope:
+- Persistent storage
 - Real-time guarantees
-- Persistence and durability
 - Advanced observability and metrics
+- Production-grade concurrency handling
 
 ---
 
-## Implemented features (Sprint 2 — Days 1 to 3)
+## Implemented features
 
 ### Command queue and durations
-- Introduction of a command model with remaining execution time
+- Introduction of a command model with explicit execution duration
 - Command queue managed at the application layer
 - Commands persist across multiple simulation steps
 - Support for overlapping commands
 
 ### Temporal correctness
 - Command effects scaled proportionally to the actual time applied within each step
-- Correct aggregation of force and torque for partial durations
-- Preservation of remaining command time after each step
-- Deterministic and testable temporal behavior
+- Correct aggregation of forces and torques for partial durations
+- Deterministic temporal integration
+- Test coverage validating time scaling and overlap behavior
 
 ### Background simulation execution
 - Introduction of a background simulation runner using a dedicated thread
 - Automatic periodic execution of simulation steps
-- Control over simulation lifecycle: start, pause, resume, stop
-- Clear separation between execution infrastructure and application logic
+- Explicit lifecycle controls: start, pause, resume, stop
+- Separation of execution infrastructure from control logic
+
+### Thread-safety and robustness
+- Application-level locking to protect shared state
+- Safe interaction between API requests and background execution
+- Snapshot-based state exposure to avoid leaking internal references
+- Safe reset handling while background execution is active
 
 ---
 
-## Architecture overview (Sprint 2 additions)
+## Architecture overview
 
-- **Domain**: Remains unchanged and free of execution concerns
-- **Application**:
-  - Owns command queue and temporal logic
+- **Domain**
+  - Remains pure and free of execution or concurrency concerns
+
+- **Application**
+  - Owns command scheduling and temporal logic
   - Orchestrates simulation execution
-  - Exposes lifecycle controls
-- **Infrastructure**:
+  - Provides thread-safe access to shared state
+
+- **Infrastructure**
   - Background execution loop
-  - Thread-based runner
-- **API**:
-  - Endpoints for command submission
-  - Endpoints for simulation lifecycle control
+  - Thread-based simulation runner
+
+- **API**
+  - Control endpoints for simulation lifecycle
+  - Safe, read-only exposure of runtime state
 
 ---
 
 ## Key technical decisions
-- Use of explicit time integration with proportional time-based scaling of command effects
-- Thread-based execution chosen for simplicity and determinism
-- Infrastructure introduced only when strictly necessary
-- Avoidance of premature locking or concurrency optimizations
-- Strong emphasis on correctness and test coverage over performance
+- Explicit time integration over implicit accumulation
+- Thread-based execution for simplicity and determinism
+- Single lock strategy for correctness over performance
+- Snapshot-based state exposure instead of raw object access
+- Infrastructure introduced only when required
 
 ---
 
 ## Known limitations
-- Background runner is not fully thread-safe
-- Shared state access is minimally protected
-- Simulation timing is approximate (not real-time)
+- Background runner is not real-time accurate
+- Thread-safety is minimal but sufficient for current scope
 - All state remains in-memory
+- No persistence or recovery mechanisms
 
-These limitations are accepted trade-offs at this stage.
+These limitations are conscious trade-offs for this stage of the project.
 
 ---
 
 ## Current status
 The system now supports:
-- Manual and automatic simulation execution
-- Time-based command scheduling
+- Manual and autonomous simulation execution
+- Time-based command scheduling with durations
 - Overlapping control inputs
+- Safe concurrent access via API
 - Clean lifecycle management
 
-The project is well-positioned for further robustness and infrastructure hardening.
+Sprint 2 successfully establishes a robust and extensible execution foundation.
 
 ---
 
-## Next steps (Sprint 2 — upcoming)
-- Introduce basic thread-safety mechanisms
-- Prevent race conditions between API and runner
-- Improve execution robustness
-- Prepare infrastructure for persistence and observability
+## Next steps
+Sprint 3 will focus on:
+- State and history persistence
+- Structured logging and observability
+- Exporting telemetry and diagnostics
+- Preparing the system for longer-running scenarios

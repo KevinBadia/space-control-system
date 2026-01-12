@@ -46,6 +46,10 @@ def stop():
     simulation.stop()
     return {"running": False}
 
+@router.get("/status")
+def status():
+    return simulation.get_runtime_status()
+
 
 @router.post("/command")
 def command(req: CommandRequest):
@@ -55,7 +59,7 @@ def command(req: CommandRequest):
     #except ValueError as e:
     #    raise HTTPException(status_code=400, detail=str(e))
     if req.type == "reset":
-        simulation.__init__()
+        simulation.reset()
         return {"accepted": True}
     
     duration = req.duration or 1.0

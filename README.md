@@ -62,17 +62,16 @@ It is an engineering-oriented backend system.
 
 ---
 
-## Current status
+## Current Status
 
-Sprint 1 completed.
+The system currently supports:
+- Time-based command scheduling with explicit durations
+- Correct temporal scaling of command effects
+- Automatic background simulation execution
+- Lifecycle control via API (run, pause, resume, stop)
+- Minimal thread-safety through application-level locking
+- Snapshot-based runtime state inspection
 
-The project currently provides:
-- A clean, layered backend architecture
-- A deterministic step-based spacecraft simulation
-- REST API endpoints for observing and controlling system state
-- Test coverage for domain logic and API behavior
-- Isolated and reproducible test execution
-- Automatic background simulation loop with start/pause/stop controls
 
 
 The system is intentionally simple but structurally sound, serving as a foundation for more advanced control and data features.

@@ -166,19 +166,39 @@ Resets the simulation state to initial conditions.
 
 ---
 
-### Simulation Control
+## Simulation Control
 
-#### `POST /run`  
+These endpoints control the background execution of the simulation.
+
+### POST /run
 Starts the background simulation loop.
 
-#### `POST /pause`  
-Pauses simulation execution.
+### POST /pause
+Pauses simulation execution without resetting state.
 
-#### `POST /resume`  
+### POST /resume
 Resumes simulation execution after a pause.
 
-#### `POST /stop`  
-Stops the simulation loop.
+### POST /stop
+Stops the background simulation loop.
+
+---
+
+## Runtime Status
+
+### GET /status
+Returns a snapshot of the current runtime state.
+
+Example fields:
+- running
+- paused
+- dt
+- queue_length
+- history_size
+- t
+
+The response represents a read-only snapshot and does not expose internal objects.
+
 
 
 ---

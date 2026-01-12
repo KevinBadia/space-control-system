@@ -2,6 +2,8 @@ from app.domain.state import State
 from app.domain.system import SpacecraftSystem
 from app.application.commands import Command
 from app.infrastructure.runner import SimulationRunner
+
+import threading 
 # No importamos CommandRequest, dado que pasaremos un dict a la función directamente
 
 class SimulationService:
@@ -28,17 +30,28 @@ class SimulationService:
 
         self.runner = SimulationRunner(self.step, dt=0.1)
 
+        self._lock = threading.Lock()
+
     def run(self):
-        self.runner.start()
+        with self._lock:
+            self.runner.start()
 
     def pause(self):
-        self.runner.pause()
+        with self._lock:
+            self.runner.pause()
 
     def resume(self):
-        self.runner.resume()
+        with self._lock:
+            self.runner.resume()
 
     def stop(self):
-        self.runner.stop()
+        with self._lock:
+            self.runner.stop()
+
+    def reset(self):
+        with self._lock:
+            self.runner.stop()
+            self.__init__()
 
     def step(self, dt: float):
 #        self.system.step(dt)
@@ -78,44 +91,59 @@ class SimulationService:
         if dt <= 0:
             raise ValueError("dt must be positive")
         
-        fx_time = 0.0
-        fy_time = 0.0
-        torque_time = 0.0
-        remaining_commands: list[Command] = []
+        with self._lock:
+            fx_time = 0.0
+            fy_time = 0.0
+            torque_time = 0.0
+            remaining_commands: list[Command] = []
 
-        for cmd in self.command_queue:
-            applied_dt = min(dt, cmd.remaining_time)
+            for cmd in self.command_queue:
+                applied_dt = min(dt, cmd.remaining_time)
 
-            if cmd.type == "apply_force":
-                fx_time += cmd.fx * applied_dt
-                fy_time += cmd.fy * applied_dt
+                if cmd.type == "apply_force":
+                    fx_time += cmd.fx * applied_dt
+                    fy_time += cmd.fy * applied_dt
 
-            elif cmd.type == "apply_torque":
-                torque_time += cmd.torque * applied_dt
+                elif cmd.type == "apply_torque":
+                    torque_time += cmd.torque * applied_dt
 
-            cmd.remaining_time -= applied_dt
+                cmd.remaining_time -= applied_dt
 
-            if cmd.remaining_time > 0:
-                remaining_commands.append(cmd)
+                if cmd.remaining_time > 0:
+                    remaining_commands.append(cmd)
 
-        self.command_queue = remaining_commands
+            self.command_queue = remaining_commands
 
-        # Convert time-integrated effects into average inputs over dt
-        fx = fx_time / dt
-        fy = fy_time / dt
-        torque = torque_time / dt
+            # Convert time-integrated effects into average inputs over dt
+            fx = fx_time / dt
+            fy = fy_time / dt
+            torque = torque_time / dt
 
-        self.system.apply_force(fx, fy)
-        self.system.apply_torque(torque)
+            self.system.apply_force(fx, fy)
+            self.system.apply_torque(torque)
 
-        self.system.step(dt)
-        self.history.append(self.system.state.model_copy())
+            self.system.step(dt)
+            self.history.append(self.system.state.model_copy())
 
     def get_state(self) -> State:
-        return self.system.state
+        with self._lock:
+            return self.system.state.model_copy()
 
     def get_history(self, limit: int = 100) -> list[State]:
-        return self.history[-limit:]
+        with self._lock:
+            return self.history[-limit:]
+
+    def get_runtime_status(self):
+        with self._lock:
+            return {
+                "running": self.runner.is_running(),
+                "paused": self.runner.is_paused(),
+                "dt": self.runner.dt,
+                "queue_length": len(self.command_queue),
+                "history_size": len(self.history),
+                "t": self.system.state.t,
+            }
+
 
     def apply_command(self, cmd: dict):
         cmd_type = cmd["type"]
@@ -138,4 +166,6 @@ class SimulationService:
     def enqueue_command(self, cmd: Command):
         if cmd.remaining_time <= 0:
             raise ValueError("Command duration must be positive")
-        self.command_queue.append(cmd)
+
+        with self._lock:
+            self.command_queue.append(cmd)

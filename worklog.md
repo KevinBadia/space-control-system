@@ -83,3 +83,27 @@
 - Add basic thread-safety mechanisms.
 - Harden infrastructure for concurrent access.
 - Continue Sprint 2 with robustness improvements.
+
+## Day 7: Hardening and documentation
+**Date:** 2026-01-12  
+**Time spent:** ~1.5–2 hours  
+
+### What I did
+- Hardened simulation lifecycle control under concurrent execution.
+- Introduced snapshot-based runtime state exposure.
+- Ensured safe reset behavior with background execution active.
+- Updated API documentation with control and status endpoints.
+- Finalized Sprint 2 documentation and summaries.
+
+### Key decisions
+- Preferred correctness and clarity over performance.
+- Used snapshot-based reads to avoid exposing mutable internal state.
+- Accepted minimal thread-safety as sufficient for current scope.
+
+### Lessons learned
+- Infrastructure concerns are easier to manage when introduced late.
+- Snapshot-based APIs greatly simplify concurrent system design.
+- Clear documentation is critical once execution becomes autonomous.
+
+### Next steps
+- Begin Sprint 3 with persistence and observability.
