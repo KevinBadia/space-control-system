@@ -13,6 +13,7 @@
 ## Quick links
 - [API Docs](http://127.0.0.1:8000/docs)
 - [Sprint 1 Summary](SPRINT_1_SUMMARY.md)
+- [Sprint 2 Summary](SPRINT_2_SUMMARY.md)
 - [Domain Spec](DOMAIN.md)
 - Simulation control: `/run`, `/pause`, `/resume`, `/stop`
 
