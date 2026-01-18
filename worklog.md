@@ -107,3 +107,31 @@
 
 ### Next steps
 - Begin Sprint 3 with persistence and observability.
+
+
+## Sprint 3 — Persistence and Observability
+**Date:** 2026-01-18  
+**Time spent:** ~2–3 hours  
+
+### What I did
+- Implemented SQLite-based telemetry persistence.
+- Added state rehydration on startup.
+- Introduced structured logging for simulation execution.
+- Extended runtime status endpoint with useful metrics.
+- Added telemetry export via HTTP (CSV/JSON).
+- Ensured all changes remain testable and deterministic.
+
+### Key decisions
+- Chose SQLite for simplicity and portability.
+- Kept persistence optional to avoid contaminating tests.
+- Used snapshot-based status reporting for thread safety.
+- Avoided server-side file creation for exports.
+
+### Lessons learned
+- Clear separation of persistence and domain logic simplifies evolution.
+- Observability features drastically improve debuggability.
+- Making features optional preserves test reliability.
+
+### Next steps
+- Close Sprint 3 formally after final cleanup.
+- Begin Sprint 4 with control extensibility and scheduling.

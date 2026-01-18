@@ -237,3 +237,31 @@ The response represents a read-only snapshot and does not expose internal object
 * Global simulation instance (not designed for concurrency yet).
 
 ---
+
+## Telemetry
+
+### GET /telemetry
+Returns the most recent persisted telemetry records.
+
+Query parameters:
+- limit (optional): maximum number of records to return
+
+---
+
+### GET /telemetry/export
+Exports telemetry data.
+
+Query parameters:
+- limit (optional): number of records to export
+- format (optional): csv (default) or json
+
+The export is returned as an HTTP response and is not written to disk by the server.
+
+---
+
+## Runtime Status
+
+### GET /status
+Returns a snapshot of the current runtime state, including execution status, metrics, and simulation time.
+
+The response is read-only and safe for concurrent access.

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import PlainTextResponse
 from app.application.services import SimulationService
 from app.api.schemas import StepRequest, CommandRequest
 from app.application.commands import Command
@@ -46,10 +47,37 @@ def stop():
     simulation.stop()
     return {"running": False}
 
+#@router.get("/status")
+#def status():
+#    return simulation.get_runtime_status()
 @router.get("/status")
 def status():
-    return simulation.get_runtime_status()
+    return simulation.get_status()
 
+
+@router.get("/telemetry")
+def telemetry(limit: int = 100):
+    # returns last persisted rows
+    return simulation.telemetry_repo.fetch_last(limit=limit)
+
+@router.get("/telemetry/export")
+def export_telemetry(limit: int = 1000, format: str = "csv"):
+    rows = simulation.telemetry_repo.fetch_last(limit=limit)
+    rows = list(reversed(rows))  # oldest -> newest
+
+    if format == "json":
+        return rows
+
+    # CSV (default)
+    if not rows:
+        return PlainTextResponse("", media_type="text/csv")
+
+    headers = rows[0].keys()
+    lines = [",".join(headers)]
+    for r in rows:
+        lines.append(",".join(str(r[h]) for h in headers))
+
+    return PlainTextResponse("\n".join(lines), media_type="text/csv")
 
 @router.post("/command")
 def command(req: CommandRequest):

@@ -3,7 +3,8 @@ from app.application.commands import Command
 
 
 def test_short_duration_command_scales_effect():
-    service = SimulationService()
+    service = SimulationService(load_from_db=False)
+
 
     # mass=1.0 in service by default
     cmd = Command(type="apply_force", fx=10.0, fy=0.0, remaining_time=0.2)
@@ -17,7 +18,8 @@ def test_short_duration_command_scales_effect():
 
 
 def test_overlapping_commands_sum_effects():
-    service = SimulationService()
+    service = SimulationService(load_from_db=False)
+
 
     service.enqueue_command(Command(type="apply_force", fx=4.0, fy=0.0, remaining_time=1.0))
     service.enqueue_command(Command(type="apply_force", fx=6.0, fy=0.0, remaining_time=1.0))
@@ -29,7 +31,8 @@ def test_overlapping_commands_sum_effects():
 
 
 def test_long_command_persists_with_remaining_time():
-    service = SimulationService()
+    service = SimulationService(load_from_db=False)
+
 
     service.enqueue_command(Command(type="apply_force", fx=1.0, fy=0.0, remaining_time=2.5))
 
