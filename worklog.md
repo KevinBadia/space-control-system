@@ -135,3 +135,30 @@
 ### Next steps
 - Close Sprint 3 formally after final cleanup.
 - Begin Sprint 4 with control extensibility and scheduling.
+
+## Sprint 4 — Day 1: Scheduled Commands
+**Date:** 2026-02-09  
+**Time spent:** ~1.5–2 hours  
+
+### What I did
+- Extended the Command model with an optional `start_at` field.
+- Updated the simulation scheduler to respect future activation times.
+- Ensured commands remain in the queue until their start time is reached.
+- Preserved remaining_time semantics for scheduled commands.
+- Updated API schema to accept `start_at`.
+- Added tests validating that commands do not execute before their scheduled time.
+
+### Key decisions
+- Kept scheduling logic inside the application layer (SimulationService).
+- Avoided modifying domain logic.
+- Treated `start_at=None` as immediate execution.
+- Maintained deterministic behavior for testing.
+
+### Lessons learned
+- Temporal orchestration belongs in the application layer.
+- Extending control features without touching the domain keeps architecture clean.
+- Simple scheduling logic can be introduced incrementally without breaking tests.
+
+### Next steps
+- Improve temporal precision when crossing start boundaries.
+- Introduce batch scenario endpoint (Sprint 4 Day 2).
