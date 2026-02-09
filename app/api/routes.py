@@ -90,6 +90,8 @@ def command(req: CommandRequest):
         simulation.reset()
         return {"accepted": True}
     
+    start_at = req.start_at
+
     duration = req.duration or 1.0
 
     cmd = Command(

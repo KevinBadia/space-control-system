@@ -82,7 +82,14 @@ class SimulationService:
             fx_time = fy_time = torque_time = 0.0
             remaining_commands: list[Command] = []
 
+            current_t = self.system.state.t
+
             for cmd in self.command_queue:
+
+                if cmd.start_at is not None and current_t < cmd.start_at:
+                    remaining_commands.append(cmd)
+                    continue
+                
                 applied_dt = min(dt, cmd.remaining_time)
 
                 if cmd.type == "apply_force":

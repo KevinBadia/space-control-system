@@ -9,3 +9,4 @@ class Command:
     fy: float = 0.0
     torque: float = 0.0
     remaining_time: float = 0.0
+    start_at: Optional[float] = None

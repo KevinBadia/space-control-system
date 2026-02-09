@@ -13,3 +13,5 @@ class CommandRequest(BaseModel):
 
     torque: Optional[float] = Field(default = None, ge = -5, le = 5)
     duration: Optional[float] = Field(default=None, gt=0)
+
+    start_at: Optional[float] = Field(default=None, ge=0)
